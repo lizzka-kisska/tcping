@@ -30,7 +30,7 @@ def get_data(args):
     except IndexError:
         pass
     except ValueError:
-        print(f'You must use num=..., port=..., timeout=...')
+        print(f'You must use num=..., port=..., timeout=..., lag=...')
         sys.exit(0)
     return host, packages, port, timeout, delay
 
