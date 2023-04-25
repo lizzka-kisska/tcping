@@ -7,8 +7,10 @@ class TestGettingData:
     def test_get_data(self):
         assert get_data(['main.py', 'ya.ru']) == ('ya.ru', 1, 80, 1, 0)
         assert get_data(['', 'num=4']) == ('num=4', 1, 80, 1, 0)
-        assert get_data(['', 'google.com', 'port=45', 'num=10']) == ('google.com', 10, 45, 1, 0)
-        assert get_data(['', 'ya.py', 'num=4', 'port=43', 'tmt=6', 'lag=5']) == ('ya.py', 4, 43, 6, 5)
+        assert get_data(['', 'google.com', 'port=45', 'num=10'])\
+               == ('google.com', 10, 45, 1, 0)
+        assert get_data(['', 'ya.py', 'num=4', 'port=43', 'tmt=6', 'lag=5'])\
+               == ('ya.py', 4, 43, 6, 5)
         with pytest.raises(SystemExit):
             get_data([])
         with pytest.raises(SystemExit):
