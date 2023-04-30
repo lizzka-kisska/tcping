@@ -4,13 +4,13 @@ import time
 import const
 from connection_socket import plug_socket
 from getting_data import get_data
+from sending_mail import send_mail
 
 
 def create_result(count):
     result, success = \
         plug_socket(const.host, const.port, const.timeout, count)
     const.passed += success
-    time.sleep(const.delay)
     return result
 
 
@@ -18,8 +18,7 @@ def create_stat():
     failed = const.packages - const.passed
     stat_f = int(failed / const.packages * 100)
     stat_p = 100 - stat_f
-    return 'Packets: {} ({}%) passed, {} ({}%) failed, {} sent'. \
-        format(const.passed, stat_p, failed, stat_f, const.packages)
+    return f'Packets: {const.passed} ({stat_p}%) passed, {failed} ({stat_f}%) failed, {const.packages} sent'
 
 
 def create_time_stat():
@@ -28,31 +27,39 @@ def create_time_stat():
         min_time = min(time_res)
         average_time = sum(time_res) / len(time_res)
         max_time = max(time_res)
-        return 'Packet sending time: ' \
-               'min - {} ms, max - {} ms, average - {} ms'\
-            .format(min_time, max_time, int(average_time * 1000) / 1000)
+        return f'Packet sending time: min - {min_time} ms, max - {max_time} ms, average - {int(average_time * 1000) / 1000} ms'
     else:
         return 'Packets sending time: 0 ms'
 
 
 def main():
     if not sys.argv[0].startswith('/Users'):
-        const.host, const.packages, const.port, const.timeout, const.delay = \
-            get_data(sys.argv)
+        get_data(sys.argv)
     const.passed = 0
     count = 0
+    result = ''
     if str(const.packages).isalpha():
         while True:
+            if not const.mail:
+                print('It is impossible to send the result to the mail')
             print(create_result(count))
             count += 1
     else:
         while count < const.packages:
-            print(create_result(count))
+            line_result = create_result(count)
+            if not const.mail:
+                time.sleep(const.delay)
+                print(line_result)
+            result += line_result + f'\n'
             count += 1
 
-    print('\n--{} statistics--'.format(const.host))
-    print(create_stat())
-    print(create_time_stat())
+    result_stat = f'\n--{const.host} statistics--' + f'\n'
+    result_stat += create_stat() + f'\n'
+    result_stat += create_time_stat()
+    if const.mail:
+        print(send_mail(result + result_stat))
+    else:
+        print(result_stat)
 
 
 if __name__ == '__main__':

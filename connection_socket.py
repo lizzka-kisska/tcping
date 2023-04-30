@@ -15,10 +15,9 @@ def plug_socket(host, port, timeout, seq):
         const.time.append(float(format(res_time, '.3f')))
         s.shutdown(socket.SHUT_RD)
         s.close()
-        return 'Connection to {}: port={}, tcp_seq={}'. \
-            format(host, port, seq + 1), 1
+        return f'Connection to {host}: port={port}, tcp_seq={seq+1}', 1
     except socket.timeout:
-        return 'Connection timed out :(', 0
+        return f'Connection timed out :(', 0
     except socket.gaierror:
-        print('You may have entered the domain or ip incorrectly')
+        print(f'You may have entered the domain or ip incorrectly')
         sys.exit(0)

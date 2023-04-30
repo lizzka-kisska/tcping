@@ -1,16 +1,21 @@
 import pytest
 
+import const
 from getting_data import get_host, get_pack, get_port, get_timeout, get_data
 
 
 class TestGettingData:
     def test_get_data(self):
-        assert get_data(['main.py', 'ya.ru']) == ('ya.ru', 1, 80, 1, 0)
-        assert get_data(['', 'num=4']) == ('num=4', 1, 80, 1, 0)
-        assert get_data(['', 'google.com', 'port=45', 'num=10'])\
-               == ('google.com', 10, 45, 1, 0)
-        assert get_data(['', 'ya.py', 'num=4', 'port=43', 'tmt=6', 'lag=5'])\
-               == ('ya.py', 4, 43, 6, 5)
+        get_data(['main.py', 'ya.ru'])
+        assert const.host == 'ya.ru'
+        get_data(['', 'num=4'])
+        assert const.host == 'num=4'
+        get_data(['', 'google.py', 'port=45', 'num=10', 'tmt=6', 'lag=5'])
+        assert const.host == 'google.py'
+        assert const.port == 45
+        assert const.packages == 10
+        assert const.timeout == 6
+        assert const.delay == 5
         with pytest.raises(SystemExit):
             get_data([])
         with pytest.raises(SystemExit):
