@@ -15,11 +15,14 @@ def send_mail(message):
     msg['Subject'] = 'Result of tcping'
 
     msg.attach(MIMEText(message, 'plain'))
-    with smtplib.SMTP('smtp.ya.ru: 587') as server:
-        server.starttls()
 
-        server.login(msg['From'], password)
-
-        server.sendmail(msg['From'], msg['To'], msg.as_string())
-
-    return f'Successfully sent email to {msg["To"]}'
+    try:
+        with smtplib.SMTP('smtp.ya.ru: 587') as server:
+            server.starttls()
+            server.login(msg['From'], password)
+            server.sendmail(msg['From'], msg['To'], msg.as_string())
+        return f'Successfully sent email to {const.mail}'
+    except smtplib.SMTPServerDisconnected:
+        return f'The server {const.mail} is not responding'
+    except smtplib.SMTPException:
+        return f'Something gone wrong'

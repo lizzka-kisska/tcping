@@ -1,7 +1,7 @@
 import pytest
 
 import const
-from getting_data import get_host, get_pack, get_port, get_timeout, get_data
+from getting_data import get_host, get_pack, get_port, get_timeout, get_data, get_mail
 
 
 class TestGettingData:
@@ -10,6 +10,9 @@ class TestGettingData:
         assert const.host == 'ya.ru'
         get_data(['', 'num=4'])
         assert const.host == 'num=4'
+        get_data(['main.py', 'google.com', 'mail=a.liza-2017@yandex.ru'])
+        assert const.host == 'google.com'
+        assert const.mail == 'a.liza-2017@yandex.ru'
         get_data(['', 'google.py', 'port=45', 'num=10', 'tmt=6', 'lag=5'])
         assert const.host == 'google.py'
         assert const.port == 45
@@ -47,3 +50,11 @@ class TestGettingData:
         assert get_timeout(5) == 5
         with pytest.raises(SystemExit):
             get_timeout('ya.ru')
+
+    def test_get_mail(self):
+        assert get_mail('a.liza-2017@yandex.ru') == 'a.liza-2017@yandex.ru'
+        assert get_mail('resultping@ya.ru') == 'resultping@ya.ru'
+        with pytest.raises(SystemExit):
+            get_data('a.lizaaa2017@gmail.com')
+        with pytest.raises(SystemExit):
+            get_data('a.liza-2017yandex.ru')

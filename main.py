@@ -32,7 +32,7 @@ def create_time_stat():
         return 'Packets sending time: 0 ms'
 
 
-def main():
+def print_result():
     if not sys.argv[0].startswith('/Users'):
         get_data(sys.argv)
     const.passed = 0
@@ -57,10 +57,10 @@ def main():
     result_stat += create_stat() + f'\n'
     result_stat += create_time_stat()
     if const.mail:
-        print(send_mail(result + result_stat))
+        return send_mail(result + result_stat)
     else:
-        print(result_stat)
+        return result_stat
 
 
 if __name__ == '__main__':
-    main()
+    print(print_result())
