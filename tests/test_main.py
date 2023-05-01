@@ -5,7 +5,8 @@ from main import create_result, create_stat, create_time_stat, print_result
 class TestMain:
     def test_create_result(self):
         const.host = 'ya.ru'
-        assert create_result(2) == 'Connection to ya.ru: port=80, tcp_seq=3' or 'Connection timed out :('
+        assert create_result(2) == 'Connection to ya.ru: port=80, tcp_seq=3'\
+               or 'Connection timed out :('
         const.host = 'google.com'
         assert create_result(0) == \
                'Connection to google.com: port=80, tcp_seq=1'
@@ -31,4 +32,5 @@ class TestMain:
     def test_print_result(self):
         const.mail = 'a.liza-2017@yandex.ru'
         const.host = 'google.com'
-        assert print_result() == f'Successfully sent email to a.liza-2017@yandex.ru'
+        assert print_result() == f'Successfully sent email to ' \
+                                 f'a.liza-2017@yandex.ru'

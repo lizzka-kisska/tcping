@@ -6,7 +6,8 @@ import const
 
 
 def send_mail(message):
-    with open('/Users/elizavetaantonova/Desktop/inst/питон/4 сем/ping/password.txt', 'r', encoding="UTF-8") as f:
+    with open('/Users/elizavetaantonova/Desktop/inst/питон/4 сем/ping/'
+              'password.txt', 'r', encoding="UTF-8") as f:
         password = f.read().strip()
 
     msg = MIMEMultipart()

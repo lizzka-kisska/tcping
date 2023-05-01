@@ -1,7 +1,8 @@
 import pytest
 
 import const
-from getting_data import get_host, get_pack, get_port, get_timeout, get_data, get_mail
+from getting_data import get_host, get_pack, get_port, \
+    get_timeout, get_data, get_mail
 
 
 class TestGettingData:

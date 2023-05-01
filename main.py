@@ -18,7 +18,8 @@ def create_stat():
     failed = const.packages - const.passed
     stat_f = int(failed / const.packages * 100)
     stat_p = 100 - stat_f
-    return f'Packets: {const.passed} ({stat_p}%) passed, {failed} ({stat_f}%) failed, {const.packages} sent'
+    return f'Packets: {const.passed} ({stat_p}%) passed, {failed} ' \
+           f'({stat_f}%) failed, {const.packages} sent'
 
 
 def create_time_stat():
@@ -27,7 +28,8 @@ def create_time_stat():
         min_time = min(time_res)
         average_time = sum(time_res) / len(time_res)
         max_time = max(time_res)
-        return f'Packet sending time: min - {min_time} ms, max - {max_time} ms, average - {int(average_time * 1000) / 1000} ms'
+        return f'Packet sending time: min - {min_time} ms, max - {max_time}' \
+               f' ms, average - {int(average_time * 1000) / 1000} ms'
     else:
         return 'Packets sending time: 0 ms'
 
