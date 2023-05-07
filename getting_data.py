@@ -10,7 +10,7 @@ def get_data(args):
         print(f'You must enter the domain name or ip address')
         sys.exit(0)
     try:
-        for i in range(2, 7):
+        for i in range(2, 8):
             command, data = args[i].split('=')
             match command:
                 case 'num':
@@ -23,6 +23,8 @@ def get_data(args):
                     const.delay = get_timeout(data)
                 case 'mail':
                     const.mail = get_mail(data)
+                case 'arp':
+                    const.arp = data
     except IndexError:
         pass
     except ValueError:

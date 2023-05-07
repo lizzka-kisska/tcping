@@ -11,9 +11,10 @@ class TestGettingData:
         assert const.host == 'ya.ru'
         get_data(['', 'num=4'])
         assert const.host == 'num=4'
-        get_data(['main.py', 'google.com', 'mail=a.liza-2017@yandex.ru'])
+        get_data(['main.py', 'google.com', 'mail=a.liza-2017@yandex.ru', 'arp=yes'])
         assert const.host == 'google.com'
         assert const.mail == 'a.liza-2017@yandex.ru'
+        assert const.arp == 'yes'
         get_data(['', 'google.py', 'port=45', 'num=10', 'tmt=6', 'lag=5'])
         assert const.host == 'google.py'
         assert const.port == 45

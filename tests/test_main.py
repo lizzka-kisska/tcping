@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 import const
 from main import create_result, create_stat, create_time_stat, print_result
 
@@ -5,11 +7,16 @@ from main import create_result, create_stat, create_time_stat, print_result
 class TestMain:
     def test_create_result(self):
         const.host = 'ya.ru'
-        assert create_result(2) == 'Connection to ya.ru: port=80, tcp_seq=3'\
+        const.arp = 'No'
+        assert create_result(2) == 'Connection to ya.ru: port=80, tcp_seq=3' \
                or 'Connection timed out :('
         const.host = 'google.com'
+        const.timeout = 10
         assert create_result(0) == \
                'Connection to google.com: port=80, tcp_seq=1'
+        const.host = '192.168.0.8'
+        const.arp = 'yes'
+        assert create_result(0) == 'Connection to 6e:2c:fe:9d:8b:02: tcp_seq=1'
 
     def test_create_stat(self):
         const.passed, const.packages = 5, 10
@@ -34,3 +41,12 @@ class TestMain:
         const.host = 'google.com'
         assert print_result() == f'Successfully sent email to ' \
                                  f'a.liza-2017@yandex.ru'
+        with patch('main.create_result'):
+            const.mail = ''
+            const.host = 'ya.ru'
+            const.packages = 1
+            const.passed = 0
+            const.time = []
+            assert print_result() == f'\n--ya.ru statistics--\nPackets: 0 ' \
+                                     f'(0%) passed, 1 (100%) failed, 1 sent' \
+                                     f'\nPackets sending time: 0 ms'
