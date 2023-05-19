@@ -7,16 +7,13 @@ from main import create_result, create_stat, create_time_stat, print_result
 class TestMain:
     def test_create_result(self):
         const.host = 'ya.ru'
-        const.arp = 'No'
-        assert create_result(2) == 'Connection to ya.ru: port=80, tcp_seq=3' \
-               or 'Connection timed out :('
-        const.host = 'google.com'
-        const.timeout = 10
-        assert create_result(0) == \
-               'Connection to google.com: port=80, tcp_seq=1'
+        const.arp = False
+        assert create_result(2) == 'Connection to ya.ru: layer=network,' \
+                                   ' port=80, tcp_seq=3' or 'Connection' \
+                                                            ' timed out :('
         const.host = '192.168.0.8'
-        const.arp = 'yes'
-        assert create_result(0) == 'Connection to 6e:2c:fe:9d:8b:02: tcp_seq=1'
+        const.arp = True
+        assert create_result(3) == 'Connection to 192.168.0.8: layer=data link, arp_seq=4'
 
     def test_create_stat(self):
         const.passed, const.packages = 5, 10
@@ -39,6 +36,7 @@ class TestMain:
     def test_print_result(self):
         const.mail = 'a.liza-2017@yandex.ru'
         const.host = 'google.com'
+        const.arp = False
         assert print_result() == f'Successfully sent email to ' \
                                  f'a.liza-2017@yandex.ru'
         with patch('main.create_result'):

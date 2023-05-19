@@ -6,4 +6,4 @@ delay = 0
 mail = ''
 passed = 3
 time = []
-arp = 'no'
+arp = False

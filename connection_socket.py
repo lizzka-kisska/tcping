@@ -15,7 +15,8 @@ def plug_socket(host, port, timeout, seq):
         const.time.append(float(format(res_time, '.3f')))
         s.shutdown(socket.SHUT_RD)
         s.close()
-        return f'Connection to {host}: port={port}, tcp_seq={seq+1}', 1
+        return f'Connection to {host}: layer=network, port={port}, tcp_seq={seq+1}', 1
+    # TODO ConnectionRefusedError:
     except socket.timeout:
         return f'Connection timed out :(', 0
     except socket.gaierror:

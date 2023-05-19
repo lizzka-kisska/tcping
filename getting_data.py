@@ -6,31 +6,28 @@ import const
 def get_data(args):
     try:
         const.host = get_host(args[1])
+        get_proto(const.host)
     except IndexError:
         print(f'You must enter the domain name or ip address')
         sys.exit(0)
     try:
-        for i in range(2, 8):
+        for i in range(2, 7):
             command, data = args[i].split('=')
-            match command:
-                case 'num':
-                    const.packages = get_pack(data)
-                case 'port':
-                    const.port = get_port(data)
-                case 'tmt':
-                    const.timeout = get_timeout(data)
-                case 'lag':
-                    const.delay = get_timeout(data)
-                case 'mail':
-                    const.mail = get_mail(data)
-                case 'arp':
-                    const.arp = data
+            if command == 'num':
+                const.packages = get_pack(data)
+            elif command == 'port':
+                const.port = get_port(data)
+            elif command == 'tmt':
+                const.timeout = get_timeout(data)
+            elif command == 'lag':
+                const.delay = get_timeout(data)
+            elif command == 'mail':
+                const.mail = get_mail(data)
     except IndexError:
         pass
     except ValueError:
         print(f'You must use num=..., port=..., timeout=..., lag=..., mail=...')
         sys.exit(0)
-    # return HOST, PACKAGES, PORT, TIMEOUT, DELAY, MAIL
 
 
 def get_host(data):
@@ -90,3 +87,16 @@ def get_mail(data):
     else:
         print(f'Email must be ...@ + yandex domain')
         sys.exit(0)
+
+
+def get_proto(host):
+    if host.isalpha():
+        const.arp = False
+    else:
+        ip = host.split('.')
+        if ip[0] == '10' or (ip[0] == '192' and ip[1] == '168') or \
+                (ip[0] == '172' and 16 <= int(ip[1]) < 32) or \
+                (ip[0] == 100 and 64 <= int(ip[1]) < 128):
+            const.arp = True
+        else:
+            const.arp = False

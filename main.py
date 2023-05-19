@@ -1,22 +1,19 @@
 import sys
 import time
-import warnings
 
 import const
-from connection_arp import plug_arp_host
+from connection_arp import send_frame
 from connection_socket import plug_socket
 from getting_data import get_data
 from sending_mail import send_mail
 
 
 def create_result(count):
-    if not const.arp or const.arp.lower() == 'no' or const.arp.lower() == 'n':
+    if const.arp:
         result, success = \
-            plug_socket(const.host, const.port, const.timeout, count)
+            send_frame(const.host, const.timeout, count)
     else:
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            result, success = plug_arp_host(const.host, const.timeout, count)
+        result, success = plug_socket(const.host, const.port, const.timeout, count)
     const.passed += success
     return result
 
@@ -49,7 +46,7 @@ def print_result():
     result = ''
     if str(const.packages).isalpha():
         while True:
-            if not const.mail:
+            if const.mail:
                 print('It is impossible to send the result to the mail')
             print(create_result(count))
             count += 1

@@ -5,3 +5,4 @@ tests/__pycache__
 .pytest_cache
 tests/.DS_Store
 password.txt
+ips.txt
