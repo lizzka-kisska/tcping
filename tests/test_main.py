@@ -13,7 +13,8 @@ class TestMain:
                                                             ' timed out :('
         const.host = '192.168.0.8'
         const.arp = True
-        assert create_result(3) == 'Connection to 192.168.0.8: layer=data link, arp_seq=4'
+        assert create_result(3) == 'Connection to 192.168.0.8: ' \
+                                   'layer=data link, arp_seq=4'
 
     def test_create_stat(self):
         const.passed, const.packages = 5, 10

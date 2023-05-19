@@ -25,7 +25,8 @@ def send_frame(host, timeout, seq):
         op = b"\x00\x01"  # ARP-запрос
 
         sender_mac = src_mac
-        sender_ip = socket.inet_aton(socket.gethostbyname(socket.gethostname()))
+        sender_ip = socket.inet_aton(
+            socket.gethostbyname(socket.gethostname()))
         target_mac = b"\x00\x00\x00\x00\x00\x00"  # Неизвестный MAC получателя
         target_ip = socket.inet_aton(host)  # IP-адрес получателя
         arp_hdr = struct.pack("!2s2s1s1s2s6s4s6s4s", eth_code, ip_code,
@@ -38,7 +39,8 @@ def send_frame(host, timeout, seq):
             pcap_obj.sendpacket(packet)
             start_run = time.time()
             while True:
-                result = unpack_and_find_result(pcap_obj, sender_ip, target_ip, seq)
+                result = unpack_and_find_result(pcap_obj, sender_ip,
+                                                target_ip, seq)
                 if result:
                     return result
                 elif time.time() - start_run >= timeout:

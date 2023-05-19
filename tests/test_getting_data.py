@@ -9,13 +9,13 @@ class TestGettingData:
     def test_get_data(self):
         get_data(['main.py', 'ya.ru'])
         assert const.host == 'ya.ru'
-        assert const.arp == False
+        assert const.arp is False
         get_data(['', 'num=4'])
         assert const.host == 'num=4'
         get_data(['main.py', 'google.com', 'mail=a.liza-2017@yandex.ru'])
         assert const.host == 'google.com'
         assert const.mail == 'a.liza-2017@yandex.ru'
-        assert const.arp == False
+        assert const.arp is False
         get_data(['', 'google.py', 'port=45', 'num=10', 'tmt=6', 'lag=5'])
         assert const.host == 'google.py'
         assert const.port == 45
@@ -23,7 +23,7 @@ class TestGettingData:
         assert const.timeout == 6
         assert const.delay == 5
         get_data(['', '192.168.0.8'])
-        assert const.arp == True
+        assert const.arp is True
         with pytest.raises(SystemExit):
             get_data([])
         with pytest.raises(SystemExit):

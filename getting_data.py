@@ -26,7 +26,8 @@ def get_data(args):
     except IndexError:
         pass
     except ValueError:
-        print(f'You must use num=..., port=..., timeout=..., lag=..., mail=...')
+        print(f'You must use num=..., port=..., timeout=..., '
+              f'lag=..., mail=...')
         sys.exit(0)
 
 

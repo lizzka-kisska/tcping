@@ -13,7 +13,8 @@ def create_result(count):
         result, success = \
             send_frame(const.host, const.timeout, count)
     else:
-        result, success = plug_socket(const.host, const.port, const.timeout, count)
+        result, success = plug_socket(const.host, const.port,
+                                      const.timeout, count)
     const.passed += success
     return result
 
