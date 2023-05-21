@@ -2,10 +2,10 @@ import socket
 import sys
 import timeit
 
-import const
+from constants import const
 
 
-def plug_socket(host, port, timeout, seq):
+def send_packet(host, port, timeout, seq):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # апв4, тсп
     s.settimeout(timeout)
     try:
@@ -16,8 +16,7 @@ def plug_socket(host, port, timeout, seq):
         s.shutdown(socket.SHUT_RD)
         s.close()
         return f'Connection to {host}: layer=network, port={port},' \
-               f' tcp_seq={seq+1}', 1
-    # TODO ConnectionRefusedError:
+               f' tcp_seq={seq + 1}', 1
     except socket.timeout:
         return f'Connection timed out :(', 0
     except socket.gaierror:

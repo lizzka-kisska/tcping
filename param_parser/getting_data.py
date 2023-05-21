@@ -1,6 +1,6 @@
 import sys
 
-import const
+from constants import const
 
 
 def get_data(args):

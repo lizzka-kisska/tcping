@@ -2,12 +2,11 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 
-import const
+from constants import const
 
 
 def send_mail(message):
-    with open('/Users/elizavetaantonova/Desktop/inst/питон/4 сем/ping/'
-              'password.txt', 'r', encoding="UTF-8") as f:
+    with open(const.password_path, 'r', encoding="UTF-8") as f:
         password = f.read().strip()
 
     msg = MIMEMultipart()

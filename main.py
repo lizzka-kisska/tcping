@@ -1,11 +1,11 @@
 import sys
 import time
 
-import const
-from connection_arp import send_frame
-from connection_socket import plug_socket
-from getting_data import get_data
-from sending_mail import send_mail
+from constants import const
+from connection.data_link_layer import send_frame
+from connection.network_layer import send_packet
+from mail.sending_mail import send_mail
+from param_parser.getting_data import get_data
 
 
 def create_result(count):
@@ -13,16 +13,15 @@ def create_result(count):
         result, success = \
             send_frame(const.host, const.timeout, count)
     else:
-        result, success = plug_socket(const.host, const.port,
-                                      const.timeout, count)
+        result, success = send_packet(const.host, const.port, const.timeout, count)
     const.passed += success
     return result
 
 
 def create_stat():
     failed = const.packages - const.passed
-    stat_f = int(failed / const.packages * 100)
-    stat_p = 100 - stat_f
+    stat_f = int(failed / const.packages * const.percent_100)
+    stat_p = const.percent_100 - stat_f
     return f'Packets: {const.passed} ({stat_p}%) passed, {failed} ' \
            f'({stat_f}%) failed, {const.packages} sent'
 
@@ -34,7 +33,7 @@ def create_time_stat():
         average_time = sum(time_res) / len(time_res)
         max_time = max(time_res)
         return f'Packet sending time: min - {min_time} ms, max - {max_time}' \
-               f' ms, average - {int(average_time * 1000) / 1000} ms'
+               f' ms, average - {float(format(average_time, ".3f"))} ms'
     else:
         return 'Packets sending time: 0 ms'
 
@@ -49,6 +48,7 @@ def print_result():
         while True:
             if const.mail:
                 print('It is impossible to send the result to the mail')
+                sys.exit(0)
             print(create_result(count))
             count += 1
     else:

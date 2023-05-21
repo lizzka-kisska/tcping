@@ -1,8 +1,12 @@
 /.DS_Store
-/__pycache__/
 tests/.pytest_cache
 tests/__pycache__
 .pytest_cache
 tests/.DS_Store
-password.txt
-ips.txt
+mail/password.txt
+constants/ips.txt
+connection/__pycache__/
+constants/__pycache__/
+mail/__pycache__/
+param_parser/__pycache__/
+__pycache__/
