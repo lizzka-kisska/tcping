@@ -4,8 +4,8 @@ from connection.data_link_layer import send_frame
 
 
 class TestConnArp:
-    test_data = [('192.168.0.1', 1, 2,
-                  'Connection to 192.168.0.1: layer=data link, arp_seq=3'),
+    test_data = [('192.168.0.8', 1, 2,
+                  'Connection to 192.168.0.8: layer=data link, arp_seq=3'),
                  ('192.168.254.254', 1, 2, f'Connection timed out :(')]
 
     @pytest.mark.parametrize('host, tmt, num, result', test_data)

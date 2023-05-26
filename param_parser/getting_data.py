@@ -1,58 +1,31 @@
+import argparse
 import sys
 
 from constants import const
 
 
-def get_data(args):
-    try:
-        const.host = get_host(args[1])
-        get_proto(const.host)
-    except IndexError:
-        print(f'You must enter the domain name or ip address')
-        sys.exit(0)
-    try:
-        for i in range(2, 7):
-            command, data = args[i].split('=')
-            if command == 'num':
-                const.packages = get_pack(data)
-            elif command == 'port':
-                const.port = get_port(data)
-            elif command == 'tmt':
-                const.timeout = get_timeout(data)
-            elif command == 'lag':
-                const.delay = get_timeout(data)
-            elif command == 'mail':
-                const.mail = get_mail(data)
-    except IndexError:
-        pass
-    except ValueError:
-        print(f'You must use num=..., port=..., timeout=..., '
-              f'lag=..., mail=...')
-        sys.exit(0)
+def get_data(data):
+    parser = argparse.ArgumentParser(description='Ping')
+    parser.add_argument('host', help='server or IP address')
+    parser.add_argument('-num', help='number of packages(number or "unlimited")', default=1)
+    parser.add_argument('-port', help='port number', default=80)
+    parser.add_argument('-tmt', help='timeout', default=1)
+    parser.add_argument('-lag', help='delay', default=0)
+    parser.add_argument('-mail', help='yandex email address', default='')
+    args = parser.parse_args(data[1:])
 
-
-def get_host(data):
-    if data == '--help' or data == '-h':
-        print(
-            f'With this program, you can ping the server or IP address, '
-            f'to do this, enter:\n'
-            f' * server / IP address\n'
-            f' * num=number of packages(number or "unlimited")\n'
-            f' * port=port number\n'
-            f' * tmt=timeout\n'
-            f' * lag=delay\n'
-            f' * mail=email address')
-        sys.exit(0)
-    else:
-        return str(data)
+    const.host = args.host
+    get_protocol(args.host)
+    const.packages = get_pack(args.num)
+    const.port = get_port(args.port)
+    const.timeout = get_timeout(args.tmt)
+    const.delay = get_timeout(args.lag)
+    const.mail = get_mail(args.mail) if args.mail != '' else ''
 
 
 def get_pack(data):
     try:
-        if data == f'unlimited':
-            return data
-        else:
-            return int(data)
+        return data if data == 'unlimited' else int(data)
     except ValueError:
         print(f'Number of packages must be a number or "unlimited"')
         sys.exit(0)
@@ -90,7 +63,7 @@ def get_mail(data):
         sys.exit(0)
 
 
-def get_proto(host):
+def get_protocol(host):
     if host.isalpha():
         const.arp = False
     else:

@@ -3,7 +3,8 @@ from unittest.mock import patch
 import pytest
 
 from constants import const
-from main import create_result, create_stat, create_time_stat, print_result
+from main import create_result, create_stat, create_time_stat, \
+    get_and_print_result
 
 
 class TestMain:
@@ -27,7 +28,7 @@ class TestMain:
         assert create_stat() == result
 
     test_time = [([14, 16, 20, 6], 'Packet sending time: min - 6 ms,'
-                                   ' max - 20 ms, average - 14.0 ms'),
+                                   ' max - 20 ms, average - 14.000 ms'),
                  ([14.543, 20.765, 15.577, 18.431],
                   'Packet sending time: min - 14.543 ms, max - 20.765 ms,'
                   ' average - 17.329 ms'),
@@ -39,20 +40,22 @@ class TestMain:
         assert create_time_stat() == result
 
     def test_print_result(self):
-        const.mail = 'a.liza-2017@yandex.ru'
-        const.host = 'google.com'
-        const.arp = False
-        assert print_result() == f'Successfully sent email to ' \
-                                 f'a.liza-2017@yandex.ru'
-        with patch('main.create_result'):
-            const.mail = ''
-            const.host = 'ya.ru'
-            const.packages = 1
-            const.passed = 0
-            const.time = []
-            assert print_result() == f'\n--ya.ru statistics--\nPackets: 0 ' \
-                                     f'(0%) passed, 1 (100%) failed, 1 sent' \
-                                     f'\nPackets sending time: 0 ms'
+        with patch('main.get_data'):
+            const.mail = 'a.liza-2017@yandex.ru'
+            const.host = 'google.com'
+            const.arp = False
+            assert get_and_print_result() == f'Successfully sent email to ' \
+                                             f'a.liza-2017@yandex.ru'
+            with patch('main.create_result'):
+                const.mail = ''
+                const.host = 'ya.ru'
+                const.packages = 1
+                const.passed = 0
+                const.time = []
+                assert get_and_print_result() == f'\n--ya.ru statistics--\n'\
+                                                 f'Packets: 0 (0%) passed, 1'\
+                                                 f' (100%) failed, 1 sent\n'\
+                                                 f'Packets sending time: 0 ms'
 
     def test_print_impossible_result(self):
         const.mail = 'a.liza-2017@yandex.ru'
@@ -60,4 +63,4 @@ class TestMain:
         const.arp = False
         const.packages = 'unlimited'
         with pytest.raises(SystemExit):
-            print_result()
+            get_and_print_result()

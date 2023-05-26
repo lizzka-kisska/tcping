@@ -33,14 +33,13 @@ def create_time_stat():
         average_time = sum(time_res) / len(time_res)
         max_time = max(time_res)
         return f'Packet sending time: min - {min_time} ms, max - {max_time}' \
-               f' ms, average - {float(format(average_time, ".3f"))} ms'
+               f' ms, average - {average_time:.3f} ms'
     else:
         return 'Packets sending time: 0 ms'
 
 
-def print_result():
-    if not sys.argv[0].startswith('/Users'):
-        get_data(sys.argv)
+def get_and_print_result():
+    get_data(sys.argv)
     const.passed = 0
     count = 0
     result = ''
@@ -70,4 +69,4 @@ def print_result():
 
 
 if __name__ == '__main__':
-    print(print_result())
+    print(get_and_print_result())
